@@ -116,7 +116,7 @@ app.post('/image',(req,res) => {
 //     // Store hash in your password DB.
 // });
 
-// // Load hash from your password DB.
+// // Load hash from your password DB.test
 // bcrypt.compare("bacon", hash, function(err, res) {
 //     // res == true
 // });
