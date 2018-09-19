@@ -94,6 +94,7 @@ app.post('/register', (req,res) => {
 	.then(response => {
 		res.json(response);
 	})
+	.catch( err => res.status(400).json('unable to register'))
 	// bcrypt.hash(password, null, null, function(err, hash) {
 	// 	// console.log(hash);
 	// 	database.login[1].hash = hash;
@@ -107,7 +108,7 @@ app.post('/register', (req,res) => {
 	// 		entries: 0,
 	// 		joined: new Date()
 	// })
-	res.json(database.users[database.users.length-1]);
+	// res.json(database.users[database.users.length-1]);
 })
 
 app.get('/profile/:id', (req,res) => {
