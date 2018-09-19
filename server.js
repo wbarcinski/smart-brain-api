@@ -5,8 +5,23 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+//need to install knex and popstgre database.
 const knex = require('knex');
 
+const db = knex({
+  client: 'pg',
+  connection: {
+    host : '127.0.0.1',
+    user : 'witek',//change !!!!!!!!!!!!!!!!!!!!!!!!
+    password : '',// change !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    database : 'smart-brain'
+  }
+});
+
+db.select('*').from('users')
+	.then(data => {
+		console.log(data);
+	});
 //test
 
 const database = {
@@ -68,20 +83,30 @@ app.post('/signin', (req,res) => {
 
 app.post('/register', (req,res) => {
 	const { email,name,password } = req.body;
-	bcrypt.hash(password, null, null, function(err, hash) {
-		// console.log(hash);
-		database.login[1].hash = hash;
-		console.log('database.login[1].hash is',database.login[1].hash);
-    // Store hash in your password DB.
-});
-	database.users.push({
-			id:'125',
-			name: name,
+	db('users')
+		.returning('*')
+		.insert({
 			email: email,
-			// password: password,
-			entries: 0,
-			joined: new Date()
+			name: name,
+			joined: new Date();
+
 	})
+	.then(response => {
+		res.json(response);
+	})
+	// bcrypt.hash(password, null, null, function(err, hash) {
+	// 	// console.log(hash);
+	// 	database.login[1].hash = hash;
+	// 	console.log('database.login[1].hash is',database.login[1].hash);
+    // Store hash in your password DB.
+	// database.users.push({
+	// 		id:'125',
+	// 		name: name,
+	// 		email: email,
+	// 		// password: password,
+	// 		entries: 0,
+	// 		joined: new Date()
+	// })
 	res.json(database.users[database.users.length-1]);
 })
 
